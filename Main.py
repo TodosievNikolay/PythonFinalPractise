@@ -15,7 +15,7 @@ def timing_decorator(func):
         return result
     return wrapper
 
-# --- Algorithm Implementations with Strategy Pattern ---
+# --- Algorithm Implementations with Strategy Pattern  ---
 class SortStrategy:
     def sort(self, data):
         raise NotImplementedError

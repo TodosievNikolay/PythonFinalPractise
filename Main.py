@@ -15,12 +15,14 @@ def timing_decorator(func):
         return result
     return wrapper
 
-# --- Algorithm Implementations with Strategy Pattern  ---
+# --- Algorithm Implementations with Strategy Pattern ---
 class SortStrategy:
+    color = 'blue'
     def sort(self, data):
         raise NotImplementedError
 
 class BubbleSort(SortStrategy):
+    color = 'red'
     @timing_decorator
     def sort(self, data):
         n = len(data)
@@ -31,6 +33,7 @@ class BubbleSort(SortStrategy):
                     yield data
 
 class InsertionSort(SortStrategy):
+    color = 'green'
     @timing_decorator
     def sort(self, data):
         for i in range(1, len(data)):
@@ -44,6 +47,7 @@ class InsertionSort(SortStrategy):
             yield data
 
 class MergeSort(SortStrategy):
+    color = 'orange'
     @timing_decorator
     def sort(self, data):
         yield from self._merge_sort(data, 0, len(data) - 1)
@@ -69,6 +73,7 @@ class MergeSort(SortStrategy):
             yield data
 
 class QuickSort(SortStrategy):
+    color = 'purple'
     @timing_decorator
     def sort(self, data):
         yield from self._quick_sort(data, 0, len(data) - 1)
@@ -91,6 +96,7 @@ class QuickSort(SortStrategy):
         return i + 1
 
 class SelectionSort(SortStrategy):
+    color = 'cyan'
     @timing_decorator
     def sort(self, data):
         n = len(data)
@@ -123,6 +129,7 @@ class AlgorithmAnalyzer:
         self.canvas.pack(pady=20)
 
         self.data = []
+        self.current_color = 'blue'
 
         controls_frame = ttk.Frame(root)
         controls_frame.pack()
@@ -155,7 +162,7 @@ class AlgorithmAnalyzer:
             y0 = c_height - height * 250
             x1 = (i + 1) * x_width + offset
             y1 = c_height
-            color = 'blue' if not colorArray else colorArray[i]
+            color = self.current_color if not colorArray else colorArray[i]
             self.canvas.create_rectangle(x0, y0, x1, y1, fill=color)
         self.root.update_idletasks()
 
@@ -179,6 +186,7 @@ class AlgorithmAnalyzer:
             messagebox.showerror("Error", "Unknown algorithm selected")
             return
 
+        self.current_color = strategy.color
         context = AlgorithmContext(strategy)
         threading.Thread(target=self.run_sort, args=(context,)).start()
 
